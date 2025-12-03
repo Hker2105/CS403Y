@@ -137,8 +137,7 @@
         chat.scrollTop = chat.scrollHeight;
         input.value = "";
     }
-
-    // ✅ ENTER để gửi
+    
     document.getElementById("ai-input").addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -146,7 +145,6 @@
         }
     });
 </script>
-
 
 </body>
 
