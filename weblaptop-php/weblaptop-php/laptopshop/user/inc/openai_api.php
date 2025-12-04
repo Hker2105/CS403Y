@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-// 🔐 API KEY GROQ (key MỚI — không dán lại key cũ đã lộ)
+
 $API_KEY = "nhập key vào đây";
 
 $input = json_decode(file_get_contents("php://input"), true) ?? [];
@@ -11,7 +11,7 @@ $system = "Bạn là nhân viên bán laptop của G5 LAPTOP tại Đà Nẵng (
 Gợi ý 2-3 mẫu theo ngân sách, giải thích ngắn gọn, không trả lời rỗng.";
 
 $payload = [
-  "model" => "llama-3.1-8b-instant",   // ✅ Groq đang hoạt động
+  "model" => "llama-3.1-8b-instant",
   "messages" => array_merge([["role"=>"system","content"=>$system]], $messages),
   "temperature" => 0.7,
   "max_tokens" => 700
@@ -36,10 +36,8 @@ if ($res === false) {
 
 $data = json_decode($res, true);
 
-// Lấy câu trả lời
 $reply = $data["choices"][0]["message"]["content"] ?? "AI không phản hồi";
 
-// Trả về đúng format cho frontend hiện tại
 echo json_encode([
   "choices" => [
     ["message" => ["content" => $reply]]
