@@ -72,7 +72,5 @@
 
         </div>
     </div>
-    
-
-
+    <?php include __DIR__ . "/inc/chatbox.php"; ?>
 <?php include "./inc/footer.php"; ?>
