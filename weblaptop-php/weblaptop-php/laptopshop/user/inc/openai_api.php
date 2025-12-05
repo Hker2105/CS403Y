@@ -2,7 +2,7 @@
 header("Content-Type: application/json");
 
 
-$API_KEY = "nhập key vào đây";
+$API_KEY = "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";
 
 $input = json_decode(file_get_contents("php://input"), true) ?? [];
 $messages = $input["messages"] ?? [];
