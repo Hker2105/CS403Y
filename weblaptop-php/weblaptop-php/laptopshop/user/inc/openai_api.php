@@ -4,6 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // Kết nối DB
 require_once __DIR__ . "/../../admin/connect.php";
 
+//Paste API_Key ở file Key API.md vào đây
 $API_KEY = "";
 
 // Nhận message từ frontend
