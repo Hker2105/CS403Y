@@ -4,7 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // Kết nối DB
 require_once __DIR__ . "/../../admin/connect.php";
 
-$API_KEY = "NHẬP KEY Ở ĐÂY";
+$API_KEY = "KEY MỚI ĐÂY";
 
 // Nhận message từ frontend
 $input = json_decode(file_get_contents("php://input"), true);
