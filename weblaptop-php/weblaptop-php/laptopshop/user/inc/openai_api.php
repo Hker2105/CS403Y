@@ -4,12 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // Kết nối DB
 require_once __DIR__ . "/../../admin/connect.php";
 
-<<<<<<< HEAD
-$API_KEY = "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";
-=======
-// API KEY
-$API_KEY = "NHẬP KEY Ở ĐÂYYY";
->>>>>>> 1a7bd52d1bd59c3ede1ba08f3b9bd8f99e3faf71
+$API_KEY = "NHẬP KEY Ở ĐÂY";
 
 // Nhận message từ frontend
 $input = json_decode(file_get_contents("php://input"), true);
