@@ -31,7 +31,7 @@
         <input type="text" id="ai-input" placeholder="Nhập câu hỏi của bạn...">
         <button onclick="sendAI()">📤</button>
     </div>
-    
+
     <div style="padding: 8px; text-align: center; font-size: 11px; color: #666; background: #f8f9fa;">
         📍 01 Nguyễn Văn Linh, Đà Nẵng • 📞 +84-35338478
     </div>
@@ -55,7 +55,7 @@
         transition: all 0.3s ease;
         font-family: Arial, sans-serif;
     }
-    
+
     #ai-chat-btn:hover {
         transform: translateY(-3px) scale(1.05);
         box-shadow: 0 15px 40px rgba(255, 51, 51, 0.6);
@@ -102,31 +102,84 @@
         border-radius: 3px;
     }
 
-    .ai-msg {
-        background: white;
-        padding: 12px 16px;
-        border-radius: 15px;
-        border-bottom-left-radius: 5px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        max-width: 85%;
-        line-height: 1.6;
-        font-size: 14px;
-        animation: slideIn 0.3s ease;
+    /* make chat content a vertical flex container so align-self works */
+    #ai-chat-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+        overflow-y: auto;
+        box-sizing: border-box;
+        /* ensure padding counted in width */
     }
 
+    /* AI (bên trái) */
+    .ai-msg {
+        background: #fff;
+        padding: 12px 16px;
+        border-radius: 16px;
+        border-bottom-left-radius: 6px;
+        max-width: 75%;
+        align-self: flex-start;
+        display: block;
+        line-height: 1.45;
+        font-size: 14px;
+        text-align: left;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: normal;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* USER (bên phải) */
     .user-msg {
         background: linear-gradient(135deg, #FF3333, #CC0000);
         color: white;
         padding: 12px 16px;
-        border-radius: 15px;
-        border-bottom-right-radius: 5px;
-        margin-bottom: 15px;
+        border-radius: 16px;
+        border-bottom-right-radius: 6px;
         margin-left: auto;
-        max-width: 85%;
-        line-height: 1.6;
+        max-width: 75%;
+        display: block;
+        line-height: 1.45;
         font-size: 14px;
-        animation: slideIn 0.3s ease;
+        text-align: left;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .ai-msg,
+    .user-msg {
+        white-space: normal;
+        hyphens: auto;
+    }
+
+    #ai-chat-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px 28px 20px 20px;
+
+        overflow-y: auto;
+    }
+
+    #ai-chat-box,
+    #ai-chat-box * {
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 480px) {
+
+        .ai-msg,
+        .user-msg {
+            max-width: 85%;
+            font-size: 13px;
+        }
+
+        #ai-chat-content {
+            padding-right: 18px;
+        }
     }
 
     @keyframes slideIn {
@@ -134,6 +187,7 @@
             opacity: 0;
             transform: translateY(10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -163,9 +217,13 @@
     }
 
     @keyframes bounce {
-        0%, 60%, 100% {
+
+        0%,
+        60%,
+        100% {
             transform: translateY(0);
         }
+
         30% {
             transform: translateY(-10px);
         }
@@ -222,7 +280,7 @@
             bottom: 20px;
             right: 5%;
         }
-        
+
         #ai-chat-btn {
             bottom: 20px;
             right: 20px;
@@ -252,7 +310,7 @@
     function toggleAIChat() {
         let box = document.getElementById("ai-chat-box");
         let btn = document.getElementById("ai-chat-btn");
-        
+
         if (box.style.display === "none" || box.style.display === "") {
             box.style.display = "flex";
             btn.style.display = "none";
@@ -266,7 +324,7 @@
 
     async function sendAI() {
         if (isProcessing) return;
-        
+
         let input = document.getElementById("ai-input");
         let msg = input.value.trim();
         if (msg === "") return;
@@ -300,42 +358,44 @@
         try {
             // Gọi Claude API
             const response = await fetch("/weblaptop-php/weblaptop-php/laptopshop/user/inc/openai_api.php", {
-  method: "POST",
-  headers: {"Content-Type":"application/json"},
-  body: JSON.stringify({
-    messages: conversationHistory
-  })
-});
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    messages: conversationHistory
+                })
+            });
 
 
-const data = await response.json();
+            const data = await response.json();
 
 
             // Xóa loading
             document.getElementById("loading-msg").remove();
 
-           
+
             let aiResponse = "Xin lỗi, AI không phản hồi.";
 
-if (data.choices && data.choices.length > 0 && data.choices[0].message) {
-    aiResponse = data.choices[0].message.content;
-}
+            if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+                aiResponse = data.choices[0].message.content;
+            }
 
-// Hiển thị phản hồi AI
-let aiDiv = document.createElement("div");
-aiDiv.className = "ai-msg";
-aiDiv.innerHTML = aiResponse.replace(/\n/g, "<br>");
-chat.appendChild(aiDiv);
+            // Hiển thị phản hồi AI
+            let aiDiv = document.createElement("div");
+            aiDiv.className = "ai-msg";
+            aiDiv.innerHTML = aiResponse.replace(/\n/g, "<br>");
+            chat.appendChild(aiDiv);
 
-// Lưu hội thoại
-conversationHistory.push({
-    role: "assistant",
-    content: aiResponse
-});
+            // Lưu hội thoại
+            conversationHistory.push({
+                role: "assistant",
+                content: aiResponse
+            });
 
         } catch (error) {
             console.error("Lỗi:", error);
-            
+
             // Xóa loading nếu còn
             let loadingMsg = document.getElementById("loading-msg");
             if (loadingMsg) loadingMsg.remove();
@@ -352,7 +412,7 @@ conversationHistory.push({
             isProcessing = false;
         }
     }
-    
+
     document.getElementById("ai-input").addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -362,4 +422,5 @@ conversationHistory.push({
 </script>
 
 </body>
+
 </html>
