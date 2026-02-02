@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once __DIR__ . "/../../admin/connect.php";
 
 //Paste API_Key ở file Key API.md vào đây
-$API_KEY = "";
+$API_KEY = "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";
 
 // Nhận message từ frontend
 $input = json_decode(file_get_contents("php://input"), true);
